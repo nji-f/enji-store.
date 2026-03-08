@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>-enji not here | Digital Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #000000; --accent: #6366f1; --card: #0a0a0a; }
         body { 
@@ -45,15 +45,43 @@
             background: rgba(255,255,255,0.05);
             border-color: var(--accent);
         }
+        /* Toast Notification Styles */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .toast {
+            background: #0f172a;
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .mono { font-family: 'JetBrains Mono', monospace; }
     </style>
 </head>
 <body class="antialiased leading-relaxed">
 
+    <div id="toast-container"></div>
+
     <nav class="py-8 px-6 max-w-6xl mx-auto flex justify-between items-center">
         <div class="text-xl font-extrabold tracking-tighter italic">-enji not here.</div>
-        <div class="flex space-x-8 text-[10px] uppercase tracking-[0.2em] font-semibold text-gray-500">
-            <a href="#catalog" class="hover:text-white transition-colors">Catalog</a>
-            <a href="#reviews" class="hover:text-white transition-colors">Reviews</a>
+        <div class="flex items-center space-x-8">
+            <div id="digital-clock" class="mono text-[10px] text-indigo-400 font-bold">SYS.TIME: --:--:--</div>
+            <div class="flex space-x-8 text-[10px] uppercase tracking-[0.2em] font-semibold text-gray-500">
+                <a href="#catalog" class="hover:text-white transition-colors">Catalog</a>
+                <a href="#reviews" class="hover:text-white transition-colors">Reviews</a>
+            </div>
         </div>
     </nav>
 
@@ -63,11 +91,13 @@
                 REAL ENJI
             </div>
             <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6">-乇几ﾌ丨<span class="text-indigo-500 italic">几ㄖㄒ 卄乇尺乇</span></h1>
-            <p class="text-gray-400 max-w-lg mx-auto text-sm font-light italic">"Quality over quantity. Always."</p>
+            <p id="typewriter-text" class="text-gray-400 max-w-lg mx-auto text-sm font-light italic min-h-[20px]"></p>
         </section>
 
         <section id="catalog" class="mb-20">
-            <h2 class="text-[10px] uppercase tracking-[0.4em] text-indigo-500 font-bold mb-8">Ready Stock</h2>
+            <h2 class="text-[10px] uppercase tracking-[0.4em] text-indigo-500 font-bold mb-8 flex items-center">
+                <span class="w-2 h-2 bg-indigo-500 rounded-full mr-3 animate-pulse"></span> Ready Stock
+            </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="glow-card p-8 rounded-[32px] flex flex-col justify-between">
                     <div>
@@ -98,23 +128,23 @@
         <section class="mb-24">
             <h2 class="text-[10px] uppercase tracking-[0.4em] text-gray-700 font-bold mb-6">Sold Out</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 opacity-40 grayscale">
-                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center">
+                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center cursor-not-allowed" onclick="showToast('Zimbabwe is currently out of stock.')">
                     <h3 class="font-bold text-sm italic text-gray-400 mb-1">Zimbabwe</h3>
                     <p class="text-[9px] text-gray-600 uppercase tracking-widest font-mono">~Sold~</p>
                 </div>
-                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center">
+                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center cursor-not-allowed" onclick="showToast('Venezuela is currently out of stock.')">
                     <h3 class="font-bold text-sm italic text-gray-400 mb-1">Venezuela</h3>
                     <p class="text-[9px] text-gray-600 uppercase tracking-widest font-mono">~Sold~</p>
                 </div>
-                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center">
+                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center cursor-not-allowed" onclick="showToast('Germany is currently out of stock.')">
                     <h3 class="font-bold text-sm italic text-gray-400 mb-1">Germany</h3>
                     <p class="text-[9px] text-gray-600 uppercase tracking-widest font-mono">~Sold~</p>
                 </div>
-                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center">
+                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center cursor-not-allowed" onclick="showToast('Germany 2 is currently out of stock.')">
                     <h3 class="font-bold text-sm italic text-gray-400 mb-1">Germany 2</h3>
                     <p class="text-[9px] text-gray-600 uppercase tracking-widest font-mono">~Sold~</p>
                 </div>
-                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center">
+                <div class="glow-card sold p-5 rounded-2xl border-dashed border-gray-800 flex flex-col items-center justify-center text-center cursor-not-allowed" onclick="showToast('Vietnam is currently out of stock.')">
                     <h3 class="font-bold text-sm italic text-gray-400 mb-1">Vietnam</h3>
                     <p class="text-[9px] text-gray-600 uppercase tracking-widest font-mono">~Sold~</p>
                 </div>
@@ -147,6 +177,66 @@
     <footer class="text-center py-12 border-t border-white/5 opacity-50">
         <p class="text-[9px] font-medium tracking-[0.5em] uppercase">-enji not here-</p>
     </footer>
+
+    <script>
+        // 1. TYPEWRITER EFFECT
+        const textElement = document.getElementById('typewriter-text');
+        const textContent = '"Quality over quantity. Always."';
+        let index = 0;
+
+        function typeEffect() {
+            if (index < textContent.length) {
+                textElement.textContent += textContent.charAt(index);
+                index++;
+                setTimeout(typeEffect, 60);
+            }
+        }
+
+        // 2. SMOOTH SCROLLING
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 50,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 3. TOAST NOTIFICATION
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // 4. DIGITAL CLOCK
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('digital-clock').innerText = `SYS.TIME: ${hours}:${minutes}:${seconds}`;
+        }
+
+        // Initialize Everything
+        window.onload = () => {
+            setTimeout(typeEffect, 500);
+            updateClock();
+            setInterval(updateClock, 1000);
+        };
+    </script>
 
 </body>
 </html>
